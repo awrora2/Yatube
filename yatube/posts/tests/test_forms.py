@@ -27,6 +27,18 @@ class PostFormTests(TestCase):
             text='Тестовый пост',
             group=cls.group,
         )
+        cls.small_gif = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00'
+            b'\x01\x00\x00\x00\x00\x21\xf9\x04'
+            b'\x01\x0a\x00\x01\x00\x2c\x00\x00'
+            b'\x00\x00\x01\x00\x01\x00\x00\x02'
+            b'\x02\x4c\x01\x00\x3b'
+        )
+        cls.uploaded = SimpleUploadedFile(
+            name='small.gif',
+            content=cls.small_gif,
+            content_type='image/gif'
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -41,22 +53,10 @@ class PostFormTests(TestCase):
     def test_create_post(self):
         """Валидная форма создает запись в post."""
         posts_count = Post.objects.count()
-        small_gif = (
-            b'\x47\x49\x46\x38\x39\x61\x01\x00'
-            b'\x01\x00\x00\x00\x00\x21\xf9\x04'
-            b'\x01\x0a\x00\x01\x00\x2c\x00\x00'
-            b'\x00\x00\x01\x00\x01\x00\x00\x02'
-            b'\x02\x4c\x01\x00\x3b'
-        )
-        uploaded = SimpleUploadedFile(
-            name='small.gif',
-            content=small_gif,
-            content_type='image/gif'
-        )
         form_data = {
             'text': self.post.text,
             'group': self.group.id,
-            'image': uploaded,
+            'image': self.uploaded,
         }
         response = self.authorized_client.post(
             reverse('posts:post_create'),

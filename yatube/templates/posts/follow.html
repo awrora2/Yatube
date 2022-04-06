@@ -2,9 +2,8 @@
 {% block title %}Список постов автора, на которого подписан пользователь{% endblock %}
 {% block content %}
   {% include 'posts/includes/switcher.html' %}
-  <main>
-    <div class="container py-5">
-      <article> 
+  <div class="container py-5">
+  <article> 
   {% for post in page_obj %} 
   <ul>
     <li>

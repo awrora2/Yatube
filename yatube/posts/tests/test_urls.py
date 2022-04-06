@@ -18,10 +18,10 @@ class PostsURLTests(TestCase):
             author=User.objects.create_user(username='test_name'),
             text='Тестовый пост',
         )
+        cls.user = User.objects.create_user(username='name')
 
     def setUp(self):
         self.guest_client = Client()
-        self.user = User.objects.create_user(username='name')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
         self.user_second = self.post.author
