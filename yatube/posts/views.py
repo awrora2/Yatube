@@ -69,7 +69,7 @@ def post_detail(request, post_id):
 def post_create(request):
     form = PostForm(
         request.POST or None,
-        files=request.FILES or None
+        files=request.FILES or None,
     )
     if form.is_valid():
         new_post = form.save(commit=False)
@@ -87,7 +87,7 @@ def post_edit(request, post_id):
     form = PostForm(
         request.POST or None,
         files=request.FILES or None,
-        instance=post
+        instance=post,
     )
     if form.is_valid():
         form.save()
@@ -97,7 +97,7 @@ def post_edit(request, post_id):
             'form': form,
             'is_edit': True,
             'post_id': post_id,
-        }
+        },
     )
 
 
@@ -115,8 +115,7 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    follow = Post.objects.filter(
-        author__following__user=request.user)
+    follow = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(follow, LIMIT_OF_POST)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -137,6 +136,7 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    Follow.objects.filter(user=request.user, author=author).exists()
-    Follow.objects.filter(user=request.user, author=author).delete()
+    unfollow = Follow.objects.filter(user=request.user, author=author)
+    if unfollow.exists():
+        unfollow.delete()
     return redirect('posts:profile', username=username)

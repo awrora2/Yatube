@@ -37,7 +37,7 @@ class PostFormTests(TestCase):
         cls.uploaded = SimpleUploadedFile(
             name='small.gif',
             content=cls.small_gif,
-            content_type='image/gif'
+            content_type='image/gif',
         )
 
     @classmethod
@@ -61,12 +61,12 @@ class PostFormTests(TestCase):
         response = self.authorized_client.post(
             reverse('posts:post_create'),
             data=form_data,
-            follow=True
+            follow=True,
         )
         self.assertRedirects(
             response, reverse(
                 'posts:profile',
-                kwargs={'username': self.user})
+                kwargs={'username': self.user}),
         )
         self.assertEqual(Post.objects.count(),
                          posts_count + 1)
@@ -76,7 +76,7 @@ class PostFormTests(TestCase):
                 text=self.post.text,
                 group=self.group.id,
                 image='posts/small.gif',
-            ).exists()
+            ).exists(),
         )
 
     def test_create_post_of_guest_client(self):
@@ -90,7 +90,7 @@ class PostFormTests(TestCase):
         response = self.guest_client.post(
             reverse('posts:post_create'),
             data=form_data,
-            follow=True
+            follow=True,
         )
         self.assertRedirects(response, '/auth/login/?next=/create/')
         self.assertEqual(Post.objects.count(), posts_count)
@@ -106,11 +106,11 @@ class PostFormTests(TestCase):
             reverse('posts:post_edit', kwargs={
                 'post_id': self.post.id}),
             data=form_data,
-            follow=True
+            follow=True,
         )
         self.assertRedirects(response,
                              reverse('posts:post_detail',
-                                     kwargs={'post_id': self.post.id})
+                                     kwargs={'post_id': self.post.id}),
                              )
         self.assertEqual(Post.objects.count(), posts_count)
         self.assertTrue(
@@ -118,7 +118,7 @@ class PostFormTests(TestCase):
                 author=self.user,
                 text=self.post.text,
                 group=self.group.id,
-            ).exists()
+            ).exists(),
         )
 
 
@@ -147,9 +147,9 @@ class CommentFormTests(TestCase):
             reverse('posts:add_comment', kwargs={
                 'post_id': self.post.id}),
             data=form_data,
-            follow=True
+            follow=True,
         )
         self.assertRedirects(response,
                              reverse('posts:post_detail',
-                                     kwargs={'post_id': self.post.id})
+                                     kwargs={'post_id': self.post.id}),
                              )

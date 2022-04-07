@@ -69,7 +69,7 @@ class PostsViewsTest(TestCase):
     def test_group_list_show_correct_context(self):
         """Шаблон group_list сформирован с правильным контекстом."""
         response = self.authorized_client.get(
-            reverse('posts:group_list', kwargs={'slug': self.group.slug})
+            reverse('posts:group_list', kwargs={'slug': self.group.slug}),
         )
         first_object = response.context['group']
         group_title = first_object.title
@@ -81,7 +81,7 @@ class PostsViewsTest(TestCase):
         """Шаблон post_detail сформирован с правильным контекстом."""
         response = self.authorized_client.get(
             reverse('posts:post_detail', kwargs={
-                'post_id': self.post.id})
+                'post_id': self.post.id}),
         )
         first_object = response.context['post']
         posts = first_object.text
@@ -105,7 +105,7 @@ class PostsViewsTest(TestCase):
     def test_post_edit_context(self):
         """Шаблон edit_post сформирован с правильным контекстом."""
         response = self.authorized_client.get(
-            reverse('posts:post_edit', kwargs={'post_id': self.post.id})
+            reverse('posts:post_edit', kwargs={'post_id': self.post.id}),
         )
         form_fields = {
             'text': forms.fields.CharField,
@@ -121,14 +121,14 @@ class PostsViewsTest(TestCase):
 
     def test_group_list_first_page(self):
         response = self.authorized_client.get(
-            reverse('posts:group_list', kwargs={'slug': self.group.slug})
+            reverse('posts:group_list', kwargs={'slug': self.group.slug}),
         )
         self.assertEqual(len(response.context['page_obj']), 0)
 
     def test_profile_context(self):
         """Шаблон profile сформирован с правильным контекстом."""
         response = self.authorized_client.get(
-            reverse('posts:profile', kwargs={'username': self.user.username})
+            reverse('posts:profile', kwargs={'username': self.user.username}),
         )
         first_object = response.context['page_obj'][0]
         posts = first_object.text
@@ -138,7 +138,7 @@ class PostsViewsTest(TestCase):
 
     def test_profile_first_page(self):
         response = self.authorized_client.get(
-            reverse('posts:profile', kwargs={'username': self.user.username})
+            reverse('posts:profile', kwargs={'username': self.user.username}),
         )
         self.assertEqual(len(response.context['page_obj']), 1)
 
@@ -169,30 +169,30 @@ class FollowTests(TestCase):
         self.assertRedirects(
             self.guest.get(reverse(
                 'posts:profile_follow',
-                kwargs={'username': self.author.username})
+                kwargs={'username': self.author.username}),
             ),
-            f'/auth/login/?next=/profile/{self.author.username}/follow/'
+            f'/auth/login/?next=/profile/{self.author.username}/follow/',
         )
         self.authorized_client.get(reverse(
             'posts:profile_follow',
-            kwargs={'username': self.author.username})
+            kwargs={'username': self.author.username}),
         )
         self.assertTrue(
             Follow.objects.filter(
                 user=self.user,
                 author=self.author,
-            ).exists()
+            ).exists(),
         )
         self.authorized_client.get(reverse(
             'posts:profile_unfollow',
-            kwargs={'username': self.author.username})
+            kwargs={'username': self.author.username}),
         )
         self.assertEqual(Follow.objects.count(), follow_counter)
 
     def test_user_follow_posts_exist_at_desire_location(self):
         self.authorized_client.get(reverse(
             'posts:profile_follow',
-            kwargs={'username': self.author.username})
+            kwargs={'username': self.author.username}),
         )
         Post.objects.create(
             text='text',
