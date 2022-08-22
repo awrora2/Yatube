@@ -12,7 +12,7 @@ cd yatube_api
 Cоздать и активировать виртуальное окружение:
 ```
 python3 -m venv env
-12source env/bin/activate
+source env/bin/activate
 python3 -m pip install --upgrade pip
 ```
 Установить зависимости из файла requirements.txt:
