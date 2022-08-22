@@ -12,21 +12,21 @@ cd hw05_final
 Cоздать и активировать виртуальное окружение:
 ```
 python3 -m venv env
-_12source env/bin/activate_
-_python3 -m pip install --upgrade pip_
+12source env/bin/activate
+python3 -m pip install --upgrade pip
 ```
 Установить зависимости из файла requirements.txt:
 ```
-_pip install -r requirements.txt_
+pip install -r requirements.txt
 ```
 Выполнить миграции:
 ```
-_python3 manage.py migrate_
+python3 manage.py migrate
 ```
 Запустить проект:
 ```
-_cd yatube_
-_python3 manage.py runserver_
+cd yatube
+python3 manage.py runserver
 ```
 ### Prerequisites
 
